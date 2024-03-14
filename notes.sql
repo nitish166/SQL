@@ -1620,3 +1620,57 @@ FROM employees;
 
 
 
+
+
+
+
+select * from users;
+
+select * from photos;
+
+select username  from users left join photos on users.id = photos.user_id where photos.id is null;
+
+SELECT 
+    username,
+    photos.id,
+    photos.image_url, 
+    COUNT(*) AS total
+FROM photos
+INNER JOIN likes
+    ON likes.photo_id = photos.id
+INNER JOIN users
+    ON photos.user_id = users.id
+GROUP BY photos.id
+ORDER BY total DESC
+LIMIT 1;
+
+
+select (select count(*) from photos) / (select count(*) from users) as avg;
+
+select * from photo_tags;
+
+select * from tags;
+
+SELECT 
+    tag_name, COUNT(*) AS hastag_count
+FROM
+    tags
+        INNER JOIN
+    photo_tags ON tags.id = photo_tags.tag_id
+GROUP BY tag_name
+order by hastag_count desc
+limit 5;
+
+select * from photos;
+
+select * from likes;
+
+SELECT username, 
+       Count(*) AS num_likes 
+FROM   users 
+       INNER JOIN likes 
+               ON users.id = likes.user_id 
+GROUP  BY likes.user_id 
+HAVING num_likes = (SELECT Count(*) 
+                    FROM   photos); 
+                    
